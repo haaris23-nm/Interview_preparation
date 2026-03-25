@@ -1,16 +1,20 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 class Vehicle {
+    private int vehicleId;
     private String vehicleName;
     private String ownerName;
 
-    public Vehicle(String vehicleName, String ownerName) {
+    public Vehicle(int vehicleId, String vehicleName, String ownerName) {
+        this.vehicleId = vehicleId;
         this.vehicleName = vehicleName;
         this.ownerName = ownerName;
+    }
+
+    public int getVehicleId() {
+        return vehicleId;
     }
 
     public String getVehicleName() {
@@ -23,26 +27,26 @@ class Vehicle {
 
     @Override
     public String toString() {
-        return vehicleName + " owned by " + ownerName;
+        return "ID: " + vehicleId + ", " + vehicleName + " owned by " + ownerName;
     }
 }
 
 class Slot {
     private int slotId;
-    private Vehicle vehicle; // reference to Vehicle
+    private Vehicle vehicleID;
 
     public Slot(int slotId) {
         this.slotId = slotId;
-        this.vehicle = null;
+        this.vehicleID = null;
     }
 
     public boolean isEmpty() {
-        return vehicle == null;
+        return vehicleID == null;
     }
 
     public boolean park(Vehicle v) {
         if (isEmpty()) {
-            this.vehicle = v;
+            this.vehicleID = v;
             return true;
         }
         return false;
@@ -50,7 +54,7 @@ class Slot {
 
     public boolean remove() {
         if (!isEmpty()) {
-            this.vehicle = null;
+            this.vehicleID = null;
             return true;
         }
         return false;
@@ -60,8 +64,8 @@ class Slot {
         return slotId;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public Vehicle getVehicleID() {
+        return vehicleID;
     }
 
     @Override
@@ -69,11 +73,10 @@ class Slot {
         if (isEmpty()) {
             return "Slot " + slotId + ": Empty";
         } else {
-            return "Slot " + slotId + ": Occupied by " + vehicle;
+            return "Slot " + slotId + ": Occupied by " + vehicleID;
         }
     }
 }
-
 
 class ParkingLot {
     private List<Slot> slots;
@@ -85,7 +88,22 @@ class ParkingLot {
         }
     }
 
+
+    public boolean isVehicleExists(int vehicleId) {
+        for (Slot slot : slots) {
+            if (!slot.isEmpty() && slot.getVehicleID().getVehicleId() == vehicleId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean parkVehicle(Vehicle v) {
+        if (isVehicleExists(v.getVehicleId())) {
+            System.out.println("Vehicle ID already exists!");
+            return false;
+        }
+
         for (Slot slot : slots) {
             if (slot.isEmpty()) {
                 slot.park(v);
@@ -93,19 +111,21 @@ class ParkingLot {
                 return true;
             }
         }
+
         System.out.println("Parking Lot Full! Cannot park " + v);
         return false;
     }
 
-    public boolean removeVehicle(String vehicleName) {
+    public boolean removeVehicle(int vehicleId) {
         for (Slot slot : slots) {
-            if (!slot.isEmpty() && slot.getVehicle().getVehicleName().equalsIgnoreCase(vehicleName)) {
+            if (!slot.isEmpty() && slot.getVehicleID().getVehicleId() == vehicleId) {
                 slot.remove();
-                System.out.println("Vehicle " + vehicleName + " removed from Slot " + slot.getSlotId());
+                System.out.println("Vehicle ID " + vehicleId + " removed from Slot " + slot.getSlotId());
                 return true;
             }
         }
-        System.out.println("Vehicle " + vehicleName + " not found in Parking Lot.");
+
+        System.out.println("Vehicle ID " + vehicleId + " not found.");
         return false;
     }
 
@@ -117,11 +137,9 @@ class ParkingLot {
     }
 }
 
-
-public class main {
+public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
 
         int totalSlots = 100;
         ParkingLot lot = new ParkingLot(totalSlots);
@@ -133,23 +151,32 @@ public class main {
             System.out.println("3. Display Status");
             System.out.println("4. Exit");
             System.out.print("Enter choice: ");
+
             int choice = sc.nextInt();
-            sc.nextLine(); // consume newline
+            sc.nextLine(); // clear buffer
 
             switch (choice) {
                 case 1:
+                    System.out.print("Enter vehicle ID: ");
+                    int vId = sc.nextInt();
+                    sc.nextLine();
+
                     System.out.print("Enter vehicle name: ");
                     String vName = sc.nextLine();
+
                     System.out.print("Enter owner name: ");
                     String oName = sc.nextLine();
-                    Vehicle v = new Vehicle(vName, oName);
+
+                    Vehicle v = new Vehicle(vId, vName, oName);
                     lot.parkVehicle(v);
                     break;
 
                 case 2:
-                    System.out.print("Enter vehicle name to remove: ");
-                    String removeName = sc.nextLine();
-                    lot.removeVehicle(removeName);
+                    System.out.print("Enter vehicle ID to remove: ");
+                    int removeId = sc.nextInt();
+                    sc.nextLine();
+
+                    lot.removeVehicle(removeId);
                     break;
 
                 case 3:
