@@ -15,23 +15,23 @@ public class usercontroller {
     @Autowired
     private userService userService;
 
-    @GetMapping
+    @GetMapping("/login")
     public List<user> getallusers() {
         return userService.getallusers();
     }
 
-    @PostMapping
+    @PostMapping("/adduser")
     public user createuser(@RequestBody user u) {
         return userService.saveuser(u);
     }
 
     @PutMapping("/{id}")
-    public user updateuser(@PathVariable int id, @RequestBody user u) {
+    public user updateuser(@PathVariable("id") int id, @RequestBody user u) {
         return userService.updateuser(id, u);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteuser(@PathVariable int id) {
+    public String deleteuser(@PathVariable("id") int id) {
         return userService.deleteuser(id);
     }
 }

@@ -21,16 +21,15 @@ public class userService {
     }
 
 
-    public user saveuser(user User) {
-        return userRepo.save(User);
+    public user saveuser(user u) {
+        return userRepo.save(u);
     }
 
 
-    public user updateuser(int id, user user) {
+    public user updateuser(int id, user u) {
         user existing = userRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        existing.setUserid(user.getUserid());
-        existing.setUsername(user.getUsername());
+        existing.setUsername(u.getUsername());
 
         return userRepo.save(existing);
     }
