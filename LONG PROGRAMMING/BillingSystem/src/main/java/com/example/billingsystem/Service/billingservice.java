@@ -41,19 +41,19 @@ public class billingservice {
         User u = userRepo.findById(userId.intValue())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // ✅ STOCK CHECK
+        
         if (p.getQuantity() < b.getQuantity()) {
             throw new RuntimeException("Not enough stock available");
         }
 
-        // ✅ CALCULATE TOTAL
+        
         double total = p.getPrice() * b.getQuantity();
 
-        // ✅ UPDATE STOCK
+       
         p.setQuantity(p.getQuantity() - b.getQuantity());
         productRepo.save(p);
 
-        // ✅ SET VALUES
+        
         b.setTotalprice(total);   // 🔥 FIXED HERE
         b.setProductid(p);
         b.setUserid(u);
