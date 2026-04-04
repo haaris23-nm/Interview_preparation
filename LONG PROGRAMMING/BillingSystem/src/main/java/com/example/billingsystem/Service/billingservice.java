@@ -32,29 +32,29 @@ public class billingservice {
     private UserRepo userRepo;
     public billing addBilling(billing b) {
 
-        int productId = b.getProductid().getProductid();
-        Long userId = b.getUserid().getUserId();
+        int productId =b.getProductid().getProductid();
+        int userId = b.getUserid().getUserId();
 
         product p = productRepo.findById((long) productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        User u = userRepo.findById(userId.intValue())
+        User u = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // ✅ STOCK CHECK
-        if (p.getQuantity() < b.getQuantity()) {
+
+        if (p.getQuantity() < b.getQuantity().getQuantity()) {
             throw new RuntimeException("Not enough stock available");
         }
 
-        // ✅ CALCULATE TOTAL
-        double total = p.getPrice() * b.getQuantity();
 
-        // ✅ UPDATE STOCK
-        p.setQuantity(p.getQuantity() - b.getQuantity());
+        double total = p.getPrice() * b.getQuantity().getQuantity();
+
+
+        p.setQuantity(p.getQuantity() - b.getQuantity().getQuantity());
         productRepo.save(p);
 
-        // ✅ SET VALUES
-        b.setTotalprice(total);   // 🔥 FIXED HERE
+
+        b.setTotalPrice(total);
         b.setProductid(p);
         b.setUserid(u);
 

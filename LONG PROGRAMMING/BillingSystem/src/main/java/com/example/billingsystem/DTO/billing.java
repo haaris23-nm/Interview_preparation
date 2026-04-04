@@ -17,15 +17,16 @@ public class billing {
     private int billingid;
     @Column(name = "billername")
     private String billername;
+    @Column(name = "totalPrice")
+    private double totalPrice;
     @ManyToOne
     @JoinColumn(name = "productid")
     private product productid;
     @ManyToOne
     @JoinColumn(name = "userid")
     private User userid;
-    @ManyToOne
-    @JoinColumn(name = "price")
-    private product Totalprice;
+
+
     @ManyToOne
     @JoinColumn(name = "quantity")
     private product quantity;
