@@ -15,19 +15,19 @@ public class billingcontroller {
     @Autowired
     private billingservice service;
 
-    // GET ALL
+    
     @GetMapping("/getbilling")
     public List<billing> getAllBilling() {
         return service.getAllBilling();
     }
 
-    // CREATE
+    
     @PostMapping("/postbilling")
     public billing addBilling(@RequestBody billing b) {
         return service.addBilling(b);
     }
 
-    // DELETE
+    
     @DeleteMapping("/{id}")
     public String deleteBilling(@PathVariable int billingid) {
         return service.deleteBilling((long) billingid);
