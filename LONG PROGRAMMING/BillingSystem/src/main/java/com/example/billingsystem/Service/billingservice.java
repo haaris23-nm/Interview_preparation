@@ -70,7 +70,7 @@ public class billingservice {
 
         
         b.setTotalprice(total);   // 🔥 FIXED HERE
->>>>>>> 9b00d21a937704f3304dc64c58b00a219c2b0c1a
+
         b.setProductid(p);
         b.setUserid(u);
 
